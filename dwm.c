@@ -274,8 +274,8 @@ static void zoom(const Arg *arg);
 
 /* variables */
 static Systray *systray = NULL;
-static const char autostartblocksh[] = "autostart_blocking.sh";
-static const char autostartsh[] = "autostart.sh";
+static const char autostartblocksh[] = "autostart_blocking";
+static const char autostartsh[] = "autostart";
 static const char broken[] = "broken";
 static const char dwmdir[] = "dwm";
 static const char localshare[] = ".local/share";
