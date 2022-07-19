@@ -65,19 +65,23 @@ static const Layout layouts[] = {
 static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
 static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, "-fn", dmenufont, "-nb", col_gray1, "-nf", col_gray3, "-sb", col_cyan, "-sf", col_gray4, NULL };
 static const char *termcmd[]  = { "st", "-e", "tmux", NULL };
+
+// Volume controls
 static const char *pavucontrol[] = { "pavucontrol", NULL };
-static const char *volumeup[] = { "volumeup", "NULL"};
-static const char *volumedown[] = { "volumedown", "NULL"};
-static const char *resetvolume[] = { "pamixer", "--set-volume", "100","NULL"};
+static const char *volumeup[] =    { "volumeup", "NULL"};
+static const char *volumedown[] =  { "volumedown", "NULL"};
+static const char *resetvolume[] = { "volumereset", "NULL"};
+static const char *mutevolume[] =  { "volumemute", "NULL"};
 
 static Key keys[] = {
 	/* modifier                     key        function        argument */
 
 	// volume control
 	{ MODKEY,                       XK_Pause,  spawn,          {.v = pavucontrol } },
-	{ MODKEY|ShiftMask,             XK_F12,    spawn,          {.v = resetvolume } },
-	{ MODKEY,                       XK_F12,    spawn,          {.v = volumeup } },
-	{ MODKEY,                       XK_F11,    spawn,          {.v = volumedown } },
+	{ MODKEY|ShiftMask,             XK_Prior,  spawn,          {.v = resetvolume } },
+	{ MODKEY|ShiftMask,             XK_Next,   spawn,          {.v = mutevolume } },
+	{ MODKEY,                       XK_Prior,  spawn,          {.v = volumeup } },
+	{ MODKEY,                       XK_Next,   spawn,          {.v = volumedown } },
 
 	// terminal/dmenu
 	{ MODKEY,                       XK_p,      spawn,          {.v = dmenucmd } },
