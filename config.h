@@ -24,16 +24,17 @@ static const char *colors[][3]      = {
 };
 
 /* tagging */
-static const char *tags[] = { "0", "1", "2", "3", "4", "5", "6", "7", "8", "9" };
+static const char *tags[] = { "1", "2", "3", "4", "5", "6", "7", "8", "9" };
 
 static const Rule rules[] = {
 	/* xprop(1):
 	 *	WM_CLASS(STRING) = instance, class
 	 *	WM_NAME(STRING) = title
 	 */
-	/* class          instance    title       tags mask     isfloating   monitor    float x,y,w,h         floatborderpx*/
-	{ "Gimp",         NULL,       NULL,       0,            1,           -1,        50,50,500,500,        5 },
-	{ "Pavucontrol",  NULL,       NULL,       0,            1,           -1,        50,50,500,300,        3 },
+	/* class            instance    title       tags mask     isfloating   monitor    float x,y,w,h         floatborderpx*/
+	{ "Gimp",           NULL,       NULL,       0,            1,           -1,        50,50,500,500,        5 },
+	{ "Pavucontrol",    NULL,       NULL,       0,            1,           -1,        50,50,500,300,        3 },
+	{ "Google-chrome",  NULL,       NULL,       1 << 0,       0,           -1,        50,50,500,300,        3 },
 };
 
 
@@ -112,7 +113,7 @@ static Key keys[] = {
 	{ MODKEY|ShiftMask,             XK_period, tagmon,         {.i = +1 } },
 
 	// tag keys
-	TAGKEYS(                        XK_grave,                      0)
+	TAGKEYS(                        XK_grave,                  0)
 	TAGKEYS(                        XK_1,                      1)
 	TAGKEYS(                        XK_2,                      2)
 	TAGKEYS(                        XK_3,                      3)
@@ -121,7 +122,6 @@ static Key keys[] = {
 	TAGKEYS(                        XK_6,                      6)
 	TAGKEYS(                        XK_7,                      7)
 	TAGKEYS(                        XK_8,                      8)
-	TAGKEYS(                        XK_0,                      9)
 
 	// kill/close
 	{ MODKEY|ShiftMask,             XK_q,      quit,           {0} },
