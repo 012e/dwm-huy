@@ -1,0 +1,30 @@
+#!/bin/bash
+DWM=$(
+  cd $(dirname "$0")
+  pwd
+)
+echo $DWM
+
+/usr/lib/x86_64-linux-gnu/xfce4/notifyd/xfce4-notifyd &
+$DWM/dwmbar &
+remapkey &
+
+
+xss-lock slock &
+
+# keyboard rate: 150 delay + 40hz
+xset r rate 150 40 &
+
+# dwm bar
+feh --bg-scale $DWM/bg.jpg
+
+xrdb ~/.config/Xresources.d/main.Xresources
+firefox &
+
+# unimportant tasks
+sleep 3s
+# touchpad gestures
+newgrp input
+fusuma &
+# syndaemon -R & # disable touchpad while typing
+# xbanish &
