@@ -44,8 +44,12 @@ install: all
 	sed "s/VERSION/${VERSION}/g" < dwm.1 > ${DESTDIR}${MANPREFIX}/man1/dwm.1
 	chmod 644 ${DESTDIR}${MANPREFIX}/man1/dwm.1
 	rm dwm
-	unlink /home/huy/.local/share/dwm
+	rm -f /home/huy/.local/share/dwm
 	ln -s "$(shell pwd)/autostart" /home/huy/.local/share/dwm
+
+uninstall:
+	rm -f ${DESTDIR}${PREFIX}/bin/dwm\
+	rm -f /home/huy/.local/share/dwm
 
 uninstall:
 	rm -f ${DESTDIR}${PREFIX}/bin/dwm\

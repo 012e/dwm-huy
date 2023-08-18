@@ -4,7 +4,7 @@
 static const unsigned int borderpx  = 1;        /* border pixel of windows */
 static const unsigned int snap      = 32;       /* snap pixel */
 static const unsigned int systraypinning = 0;   /* 0: sloppy systray follows selected monitor, >0: pin systray to monitor X */
-static const unsigned int systrayonleft = 0;   	/* 0: systray in the right corner, >0: systray on left of status text */
+static const unsigned int systrayonleft = 0;    /* 0: systray in the right corner, >0: systray on left of status text */
 static const unsigned int systrayspacing = 2;   /* systray spacing */
 static const int systraypinningfailfirst = 1;   /* 1: if pinning fails, display systray on the first monitor, False: display systray on the last monitor*/
 static const int showsystray        = 1;     /* 0 means no systray */
@@ -18,23 +18,35 @@ static const char col_gray3[]       = "#bbbbbb";
 static const char col_gray4[]       = "#eeeeee";
 static const char col_cyan[]        = "#005577";
 static const char *colors[][3]      = {
-	/*               fg         bg         border   */
-	[SchemeNorm] = { col_gray3, col_gray1, col_gray2 },
-	[SchemeSel]  = { col_gray4, col_cyan,  "#ff0000"  },
+    /*               fg         bg         border   */
+    [SchemeNorm] = { col_gray3, col_gray1, col_gray2 },
+    [SchemeSel]  = { col_gray4, col_cyan,  "#ff0000"  },
 };
 
 /* tagging */
 static const char *tags[] = { "1", "2", "3", "4", "5", "6", "7", "8", "9" };
 
+
+#define SCREEN_WIDTH 1920
+#define SCREEN_HEIGHT 1080
+
+// p is the percentage that the window takes on the screen
+#define floatx(p) round((SCREEN_WIDTH - SCREEN_WIDTH*p)/2)
+#define floaty(p) round((SCREEN_HEIGHT - SCREEN_HEIGHT*p)/2)
+#define floatw(p) SCREEN_WIDTH - floatx(p) * 2
+#define floath(p) SCREEN_HEIGHT - floaty(p) * 2
 static const Rule rules[] = {
-	/* xprop(1):
-	 *	WM_CLASS(STRING) = instance, class
-	 *	WM_NAME(STRING) = title
-	 */
-	/* class            instance    title       tags mask     isfloating   monitor    float x,y,w,h         floatborderpx*/
-	{ "Gimp",           NULL,       NULL,       0,            1,           -1,        50,50,500,500,        5 },
-	{ "Pavucontrol",    NULL,       NULL,       0,            1,           -1,        50,50,500,300,        3 },
-	{ "Google-chrome",  NULL,       NULL,       1 << 0,       0,           -1,        50,50,500,300,        3 },
+    /* xprop(1):
+     *  WM_CLASS(STRING) = instance, class
+     *  WM_NAME(STRING) = title
+     */
+    /* class            instance    title       tags mask     isfloating   monitor    float x,y,w,h         floatborderpx*/
+    { "Gimp",          NULL,       NULL,       0,            1,           -1,        50,50,500,500,        5 },
+    { "Pavucontrol",   NULL,       NULL,       0,            1,           -1,        50,50,500,300,        3 },
+    { "copyq",         NULL,       NULL,       0,            1,           -1,        floatx(0.5),floaty(0.5),floatw(0.5),floath(0.5),     3 },
+    { "Thunar",        NULL,       NULL,       0,            1,           -1,        192,108,1536,864,     3 },
+    { "dolphin",       NULL,       NULL,       0,            1,           -1,        192,108,1536,864,     3 },
+    { "Google-chrome", NULL,       NULL,       1 << 0,       0,           -1,        50,50,500,300,        3 },
 };
 
 
@@ -45,19 +57,19 @@ static const int resizehints = 1;    /* 1 means respect size hints in tiled resi
 static const int lockfullscreen = 1; /* 1 will force focus on the fullscreen window */
 
 static const Layout layouts[] = {
-	/* symbol     arrange function */
-	{ "[]=",      tile },    /* first entry is default */
-	{ "><>",      NULL },    /* no layout function means floating behavior */
-	{ "[M]",      monocle },
+    /* symbol     arrange function */
+    { "[]=",      tile },    /* first entry is default */
+    { "><>",      NULL },    /* no layout function means floating behavior */
+    { "[M]",      monocle },
 };
 
 /* key definitions */
 #define MODKEY Mod4Mask
 #define TAGKEYS(KEY,TAG) \
-	{ MODKEY,                       KEY,      view,           {.ui = 1 << TAG} }, \
-	{ MODKEY|ControlMask,           KEY,      toggleview,     {.ui = 1 << TAG} }, \
-	{ MODKEY|ShiftMask,             KEY,      tag,            {.ui = 1 << TAG} }, \
-	{ MODKEY|ControlMask|ShiftMask, KEY,      toggletag,      {.ui = 1 << TAG} },
+    { MODKEY,                       KEY,      view,           {.ui = 1 << TAG} }, \
+    { MODKEY|ControlMask,           KEY,      toggleview,     {.ui = 1 << TAG} }, \
+    { MODKEY|ShiftMask,             KEY,      tag,            {.ui = 1 << TAG} }, \
+    { MODKEY|ControlMask|ShiftMask, KEY,      toggletag,      {.ui = 1 << TAG} },
 
 /* helper for spawning shell commands in the pre dwm-5.0 fashion */
 #define SHCMD(cmd) { .v = (const char*[]){ "/bin/sh", "-c", cmd, NULL } }
@@ -67,81 +79,97 @@ static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() 
 static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, "-fn", dmenufont, "-nb", col_gray1, "-nf", col_gray3, "-sb", col_cyan, "-sf", col_gray4, NULL };
 static const char *roficmd[] = { "rofi", "-show", "drun", NULL };
 static const char *termcmd[]  = { "sttmux", NULL };
+static const char *togglefilemanager[] = { "toggle_window", "dolphin", NULL };
 
 // Volume controls
 static const char *pavucontrol[] = { "pavucontrol", NULL };
-static const char *volumeup[] =    { "volumeup", "NULL"};
-static const char *volumedown[] =  { "volumedown", "NULL"};
-static const char *resetvolume[] = { "volumereset", "NULL"};
-static const char *mutevolume[] =  { "volumemute", "NULL"};
+static const char *volumeup[] =    { "volume", "up", NULL };
+static const char *volumedown[] =  { "volume", "down", NULL };
+static const char *resetvolume[] = { "volume", "reset", NULL };
+static const char *mutetoggle[] =  { "volume", "toggle", NULL };
+
+// brightness 
+static const char *brightnessup[] =    { "brightness", "up", NULL };
+static const char *brightnessdown[] =  { "brightness", "down", NULL };
+
+static const char *screenshotcmd1[] = { "spectacle", "--region", NULL };
+static const char *screenshotcmd2[] = { "spectacle", "--activewindow", NULL };
+static const char *screenshotcmd3[] = { "spectacle", "--fullscreen", NULL };
+static const char *copyqcmd[] = { "copyq", "toggle", NULL };
+static const char *ocr[] = { "ocr-to-clipboard", NULL };
 
 static Key keys[] = {
-	/* modifier                     key        function        argument */
+    /* modifier                     key        function        argument */
 
-	// volume control
-	{ MODKEY,                       XK_Pause,  spawn,          {.v = pavucontrol } },
-	{ MODKEY|ShiftMask,             XK_Prior,  spawn,          {.v = resetvolume } },
-	{ MODKEY|ShiftMask,             XK_Next,   spawn,          {.v = mutevolume } },
-	{ MODKEY,                       XK_Prior,  spawn,          {.v = volumeup } },
-	{ MODKEY,                       XK_Next,   spawn,          {.v = volumedown } },
+    // laptop function keys
+    {      0,                                 XF86XK_AudioMute,         spawn,          {.v = mutetoggle } },
+    {      0,                                 XF86XK_AudioLowerVolume,  spawn,          {.v = volumedown } },
+    {      0,                                 XF86XK_AudioRaiseVolume,  spawn,          {.v = volumeup } },
+    {      0,                                 XF86XK_MonBrightnessDown, spawn,          {.v = brightnessdown } },
+    {      0,                                 XF86XK_MonBrightnessUp,   spawn,          {.v = brightnessup } },
 
-	// terminal/dmenu
-	{ MODKEY,                       XK_p,      spawn,          {.v = roficmd } },
-	{ MODKEY|ShiftMask,             XK_Return, spawn,          {.v = termcmd } },
+    // APPS
+    { MODKEY,                                 XK_p,      spawn,          {.v = dmenucmd } },
+    { MODKEY,                                 XK_e,      spawn,          {.v = togglefilemanager } },
+    { MODKEY|ShiftMask,                       XK_Return, spawn,          {.v = termcmd } },
+    { MODKEY,                                 XK_v,      spawn,          {.v = copyqcmd } },
+    { MODKEY|ShiftMask,                       XK_Print,  spawn,          {.v = ocr } },
+    { 0,                                      XK_Print,  spawn,          {.v = screenshotcmd1 } },
+    { MODKEY,                                 XK_Print,  spawn,          {.v = screenshotcmd2 } },
+    { MODKEY|ShiftMask,                       XK_Print,  spawn,          {.v = screenshotcmd3 } },
 
-	// dwm shortcuts (stack, moving around)
-	{ MODKEY,                       XK_b,      togglebar,      {0} },
-	{ MODKEY,                       XK_j,      focusstack,     {.i = +1 } },
-	{ MODKEY,                       XK_k,      focusstack,     {.i = -1 } },
-	{ MODKEY,                       XK_i,      incnmaster,     {.i = +1 } },
-	{ MODKEY,                       XK_d,      incnmaster,     {.i = -1 } },
-	{ MODKEY,                       XK_h,      setmfact,       {.f = -0.05} },
-	{ MODKEY,                       XK_l,      setmfact,       {.f = +0.05} },
-	{ MODKEY,                       XK_Return, zoom,           {0} },
-	{ MODKEY,                       XK_Tab,    view,           {0} },
-	{ MODKEY,                       XK_q,      killclient,     {0} },
-	{ MODKEY,                       XK_t,      setlayout,      {.v = &layouts[0]} },
-	{ MODKEY,                       XK_f,      setlayout,      {.v = &layouts[1]} },
-	{ MODKEY,                       XK_m,      setlayout,      {.v = &layouts[2]} },
-	{ MODKEY|ShiftMask,             XK_f,      fullscreen,     {0} },
-	{ MODKEY,                       XK_space,  setlayout,      {0} },
-	{ MODKEY|ShiftMask,             XK_space,  togglefloating, {0} },
-	{ MODKEY,                       XK_0,      view,           {.ui = ~0 } },
-	{ MODKEY|ShiftMask,             XK_0,      tag,            {.ui = ~0 } },
-	{ MODKEY,                       XK_comma,  focusmon,       {.i = -1 } },
-	{ MODKEY,                       XK_period, focusmon,       {.i = +1 } },
-	{ MODKEY|ShiftMask,             XK_comma,  tagmon,         {.i = -1 } },
-	{ MODKEY|ShiftMask,             XK_period, tagmon,         {.i = +1 } },
+    // dwm shortcuts (stack, moving around)
+    { MODKEY,                                 XK_b,      togglebar,      {0} },
+    { MODKEY,                                 XK_j,      focusstack,     {.i = +1 } },
+    { MODKEY,                                 XK_k,      focusstack,     {.i = -1 } },
+    { MODKEY,                                 XK_i,      incnmaster,     {.i = +1 } },
+    { MODKEY,                                 XK_d,      incnmaster,     {.i = -1 } },
+    { MODKEY,                                 XK_h,      setmfact,       {.f = -0.05} },
+    { MODKEY,                                 XK_l,      setmfact,       {.f = +0.05} },
+    { MODKEY,                                 XK_Return, zoom,           {0} },
+    { MODKEY,                                 XK_Tab,    view,           {0} },
+    { MODKEY,                                 XK_q,      killclient,     {0} },
+    { MODKEY,                                 XK_t,      setlayout,      {.v = &layouts[0]} },
+    { MODKEY,                                 XK_f,      setlayout,      {.v = &layouts[1]} },
+    { MODKEY,                                 XK_m,      setlayout,      {.v = &layouts[2]} },
+    { MODKEY|ShiftMask,                       XK_f,      fullscreen,     {0} },
+    { MODKEY,                                 XK_space,  setlayout,      {0} },
+    { MODKEY|ShiftMask,                       XK_space,  togglefloating, {0} },
+    { MODKEY,                                 XK_0,      view,           {.ui = ~0 } },
+    { MODKEY|ShiftMask,                       XK_0,      tag,            {.ui = ~0 } },
+    { MODKEY,                                 XK_comma,  focusmon,       {.i = -1 } },
+    { MODKEY,                                 XK_period, focusmon,       {.i = +1 } },
+    { MODKEY|ShiftMask,                       XK_comma,  tagmon,         {.i = -1 } },
+    { MODKEY|ShiftMask,                       XK_period, tagmon,         {.i = +1 } },
+    { MODKEY|ShiftMask,                       XK_q,      quit,           {0} },
 
-	// tag keys
-	TAGKEYS(                        XK_grave,                  0)
-	TAGKEYS(                        XK_1,                      1)
-	TAGKEYS(                        XK_2,                      2)
-	TAGKEYS(                        XK_3,                      3)
-	TAGKEYS(                        XK_4,                      4)
-	TAGKEYS(                        XK_5,                      5)
-	TAGKEYS(                        XK_6,                      6)
-	TAGKEYS(                        XK_7,                      7)
-	TAGKEYS(                        XK_8,                      8)
+    // tag keys
+    TAGKEYS(                        XK_grave, 0)
+    TAGKEYS(                        XK_1,     1)
+    TAGKEYS(                        XK_2,     2)
+    TAGKEYS(                        XK_3,     3)
+    TAGKEYS(                        XK_4,     4)
+    TAGKEYS(                        XK_5,     5)
+    TAGKEYS(                        XK_6,     6)
+    TAGKEYS(                        XK_7,     7)
+    TAGKEYS(                        XK_8,     8)
 
-	// kill/close
-	{ MODKEY|ShiftMask,             XK_q,      quit,           {0} },
 };
 
 /* button definitions */
 /* click can be ClkTagBar, ClkLtSymbol, ClkStatusText, ClkWinTitle, ClkClientWin, or ClkRootWin */
 static Button buttons[] = {
-	/* click                event mask      button          function        argument */
-	{ ClkTagBar,            MODKEY,         Button1,        tag,            {0} },
-	{ ClkTagBar,            MODKEY,         Button3,        toggletag,      {0} },
-	{ ClkWinTitle,          0,              Button2,        zoom,           {0} },
-	{ ClkStatusText,        0,              Button2,        spawn,          {.v = termcmd } },
-	{ ClkClientWin,         MODKEY,         Button1,        movemouse,      {0} },
-	{ ClkClientWin,         MODKEY,         Button2,        togglefloating, {0} },
-	{ ClkClientWin,         MODKEY,         Button3,        resizemouse,    {0} },
-	{ ClkTagBar,            0,              Button1,        view,           {0} },
-	{ ClkTagBar,            0,              Button3,        toggleview,     {0} },
-	{ ClkTagBar,            MODKEY,         Button1,        tag,            {0} },
-	{ ClkTagBar,            MODKEY,         Button3,        toggletag,      {0} },
+    /* click                event mask      button          function        argument */
+    { ClkTagBar,            MODKEY,         Button1,        tag,            {0} },
+    { ClkTagBar,            MODKEY,         Button3,        toggletag,      {0} },
+    { ClkWinTitle,          0,              Button2,        zoom,           {0} },
+    { ClkStatusText,        0,              Button2,        spawn,          {.v = termcmd } },
+    { ClkClientWin,         MODKEY,         Button1,        movemouse,      {0} },
+    { ClkClientWin,         MODKEY,         Button2,        togglefloating, {0} },
+    { ClkClientWin,         MODKEY,         Button3,        resizemouse,    {0} },
+    { ClkTagBar,            0,              Button1,        view,           {0} },
+    { ClkTagBar,            0,              Button3,        toggleview,     {0} },
+    { ClkTagBar,            MODKEY,         Button1,        tag,            {0} },
+    { ClkTagBar,            MODKEY,         Button3,        toggletag,      {0} },
 };
 

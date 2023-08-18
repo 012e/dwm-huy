@@ -26,6 +26,7 @@
 #include <X11/Xutil.h>
 #include <X11/cursorfont.h>
 #include <X11/keysym.h>
+#include <X11/XF86keysym.h>
 #include <errno.h>
 #include <locale.h>
 #include <signal.h>
