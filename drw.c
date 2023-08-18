@@ -406,7 +406,7 @@ drw_text(Drw *drw, int x, int y, unsigned int w, unsigned int h, unsigned int lp
         } else {
           xfont_free(usedfont);
           nomatches.codepoint[++nomatches.idx % nomatches_len] = utf8codepoint;
-no_match:
+        no_match:
           usedfont = drw->fonts;
         }
       }

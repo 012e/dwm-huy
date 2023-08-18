@@ -25,8 +25,9 @@ firefox &
 
 # unimportant tasks
 sleep 3s
+
 # touchpad gestures
 newgrp input
 fusuma &
-# syndaemon -R & # disable touchpad while typing
-# xbanish &
+
+copyq &
