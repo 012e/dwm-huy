@@ -138,7 +138,7 @@ struct Client {
   int basew, baseh, incw, inch, maxw, maxh, minw, minh, hintsvalid;
   int bw, oldbw;
   unsigned int tags;
-	int isfixed, isfloating, isurgent, neverfocus, oldstate, isfullscreen, issticky;
+  int isfixed, isfloating, isurgent, neverfocus, oldstate, isfullscreen, issticky;
   int floatborderpx;
   int hasfloatbw;
   Client *next;
@@ -865,7 +865,7 @@ void drawbar(Monitor *m) {
   int boxs = drw->fonts->h / 9;
   int boxw = drw->fonts->h / 6 + 2;
   unsigned int i, occ = 0, urg = 0;
-	unsigned int a = 0, s = 0;
+  unsigned int a = 0, s = 0;
   Client *c;
 
   if (!m->showbar)
@@ -1737,10 +1737,10 @@ togglefullscr(const Arg *arg)
 void
 togglesticky(const Arg *arg)
 {
-	if (!selmon->sel)
-		return;
-	selmon->sel->issticky = !selmon->sel->issticky;
-	arrange(selmon);
+  if (!selmon->sel)
+    return;
+  selmon->sel->issticky = !selmon->sel->issticky;
+  arrange(selmon);
 }
 
 void setclientstate(Client *c, long state) {
