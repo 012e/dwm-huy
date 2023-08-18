@@ -10,8 +10,8 @@ static const int systraypinningfailfirst = 1;   /* 1: if pinning fails, display 
 static const int showsystray        = 1;     /* 0 means no systray */
 static const int showbar            = 1;     /* 0 means no bar */
 static const int topbar             = 1;     /* 0 means bottom bar */
-static const char *fonts[]          = { "JetbrainsMono Nerd Font:size=12" };
-static const char dmenufont[]       = "JetbrainsMono Nerd Font:size=24";
+static const char *fonts[]          = { "Iosevka Nerd Font:size=13.5" };
+static const char dmenufont[]       = "Iosevk Nerd Font:size=24";
 static const char col_gray1[]       = "#222222";
 static const char col_gray2[]       = "#444444";
 static const char col_gray3[]       = "#bbbbbb";
@@ -46,6 +46,7 @@ static const Rule rules[] = {
     { "copyq",         NULL,       NULL,       0,            1,           -1,        floatx(0.5),floaty(0.5),floatw(0.5),floath(0.5),     3 },
     { "Thunar",        NULL,       NULL,       0,            1,           -1,        192,108,1536,864,     3 },
     { "dolphin",       NULL,       NULL,       0,            1,           -1,        192,108,1536,864,     3 },
+    { "firefox",       NULL,       NULL,       1 << 0,       0,           -1,        50,50,500,300,        3 },
     { "Google-chrome", NULL,       NULL,       1 << 0,       0,           -1,        50,50,500,300,        3 },
 };
 
