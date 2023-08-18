@@ -9,8 +9,10 @@ echo $DWM
 $DWM/dwmbar &
 remapkey &
 
-
 xss-lock slock &
+xset dpms 0 0 180 &                             # turn off screen after 3m
+xautolock -time 5 -locker "systemctl suspend" & # suspend after 5m
+
 
 # keyboard rate: 150 delay + 40hz
 xset r rate 150 40 &
