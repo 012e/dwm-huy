@@ -11,23 +11,24 @@ static const int showsystray        = 1;     /* 0 means no systray */
 static const int showbar            = 1;     /* 0 means no bar */
 static const int topbar             = 1;     /* 0 means bottom bar */
 static const char *fonts[]          = { "Iosevka Nerd Font:size=13.5" };
-static const char dmenufont[]       = "Iosevk Nerd Font:size=24";
+static const char dmenufont[]       = "Iosevka Nerd Font:size=50";
 static const char col_gray1[]       = "#222222";
 static const char col_gray2[]       = "#444444";
 static const char col_gray3[]       = "#bbbbbb";
 static const char col_gray4[]       = "#eeeeee";
 static const char col_cyan[]        = "#005577";
+static const char col_border[]      = "#ff1493";
 static const char *colors[][3]      = {
     /*               fg         bg         border   */
-    [SchemeNorm] = { col_gray3, col_gray1, col_gray2 },
-    [SchemeSel]  = { col_gray4, col_cyan,  "#ff0000"  },
+    [SchemeNorm] = { col_gray3, col_gray1, col_gray2  },
+    [SchemeSel]  = { col_gray4, col_cyan,  col_border },
 };
 
 static const XPoint stickyicon[]    = { {0,0}, {4,0}, {4,8}, {2,6}, {0,8}, {0,0} }; /* represents the icon as an array of vertices */
 static const XPoint stickyiconbb    = {4,8};    /* defines the bottom right corner of the polygon's bounding box (speeds up scaling) */
 
 /* tagging */
-static const char *tags[] = { "1", "2", "3", "4", "5", "6", "7", "8", "9" };
+static const char *tags[] = { "0", "1", "2", "3", "4", "5", "6", "7", "8", "9" };
 
 
 #define SCREEN_WIDTH 1920
@@ -81,7 +82,7 @@ static const Layout layouts[] = {
 /* commands */
 static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
 static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, "-fn", dmenufont, "-nb", col_gray1, "-nf", col_gray3, "-sb", col_cyan, "-sf", col_gray4, NULL };
-static const char *roficmd[] = { "rofi", "-show", "drun", NULL };
+static const char *roficmd[] = { "rofi", "-show", "run", NULL };
 static const char *termcmd[]  = { "sttmux", NULL };
 static const char *togglefilemanager[] = { "toggle_window", "dolphin", NULL };
 
@@ -113,7 +114,7 @@ static Key keys[] = {
     {      0,                                 XF86XK_MonBrightnessUp,   spawn,          {.v = brightnessup } },
 
     // APPS
-    { MODKEY,                                 XK_p,      spawn,          {.v = dmenucmd } },
+    { MODKEY,                                 XK_p,      spawn,          {.v = roficmd } },
     { MODKEY,                                 XK_e,      spawn,          {.v = togglefilemanager } },
     { MODKEY|ShiftMask,                       XK_Return, spawn,          {.v = termcmd } },
     { MODKEY,                                 XK_v,      spawn,          {.v = copyqcmd } },
@@ -132,7 +133,7 @@ static Key keys[] = {
     { MODKEY,                                 XK_l,      setmfact,       {.f = +0.05} },
     { MODKEY,                                 XK_Return, zoom,           {0} },
     { MODKEY,                                 XK_Tab,    view,           {0} },
-    { MODKEY,                                 XK_q,      killclient,     {0} },
+    { MODKEY|ShiftMask,                       XK_q,      killclient,     {0} },
     { MODKEY,                                 XK_t,      setlayout,      {.v = &layouts[0]} },
     { MODKEY,                                 XK_f,      setlayout,      {.v = &layouts[1]} },
     { MODKEY,                                 XK_m,      setlayout,      {.v = &layouts[2]} },
@@ -145,7 +146,6 @@ static Key keys[] = {
     { MODKEY,                                 XK_period, focusmon,       {.i = +1 } },
     { MODKEY|ShiftMask,                       XK_comma,  tagmon,         {.i = -1 } },
     { MODKEY|ShiftMask,                       XK_period, tagmon,         {.i = +1 } },
-    { MODKEY|ShiftMask,                       XK_q,      quit,           {0} },
 
     // tag keys
     TAGKEYS(                        XK_grave, 0)
@@ -157,6 +157,7 @@ static Key keys[] = {
     TAGKEYS(                        XK_6,     6)
     TAGKEYS(                        XK_7,     7)
     TAGKEYS(                        XK_8,     8)
+    TAGKEYS(                        XK_9,     9)
 
 };
 
