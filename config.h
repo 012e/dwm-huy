@@ -24,6 +24,18 @@ static const char *colors[][3]      = {
     [SchemeSel]  = { col_gray4, col_cyan,  col_border },
 };
 
+static const char file_manager[] = "dolphin";
+typedef struct {
+    const char *name;
+    const void *cmd;
+} Sp;
+const char *spcmd1[] = { file_manager, NULL };
+static Sp scratchpads[] = {
+    /* name          cmd  */
+    { file_manager,      spcmd1},
+};
+
+
 static const XPoint stickyicon[]    = { {0,0}, {4,0}, {4,8}, {2,6}, {0,8}, {0,0} }; /* represents the icon as an array of vertices */
 static const XPoint stickyiconbb    = {4,8};    /* defines the bottom right corner of the polygon's bounding box (speeds up scaling) */
 
@@ -50,8 +62,10 @@ static const Rule rules[] = {
     { "copyq",         NULL,       NULL,       0,            1,           -1,        floatx(0.5),floaty(0.5),floatw(0.5),floath(0.5),     3 },
     { "Thunar",        NULL,       NULL,       0,            1,           -1,        192,108,1536,864,     3 },
     { "dolphin",       NULL,       NULL,       0,            1,           -1,        192,108,1536,864,     3 },
+    { NULL,            file_manager,  NULL,        SPTAG(0),     1,           -1,        192,108,1536,864,     3 },
     { "firefox",       NULL,       NULL,       1 << 0,       0,           -1,        50,50,500,300,        3 },
     { "Google-chrome", NULL,       NULL,       1 << 0,       0,           -1,        50,50,500,300,        3 },
+    { "thunderbird",   NULL,       NULL,       1 << 9,       0,           -1,        50,50,500,300,        3 },
 };
 
 
@@ -82,9 +96,8 @@ static const Layout layouts[] = {
 /* commands */
 static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
 static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, "-fn", dmenufont, "-nb", col_gray1, "-nf", col_gray3, "-sb", col_cyan, "-sf", col_gray4, NULL };
-static const char *roficmd[] = { "rofi", "-show", "run", NULL };
+static const char *roficmd[] = { "rofi", "-matching", "fuzzy","-show", "run", NULL };
 static const char *termcmd[]  = { "sttmux", NULL };
-static const char *togglefilemanager[] = { "toggle_window", "dolphin", NULL };
 
 // Volume controls
 static const char *pavucontrol[] = { "pavucontrol", NULL };
@@ -115,7 +128,7 @@ static Key keys[] = {
 
     // APPS
     { MODKEY,                                 XK_p,      spawn,          {.v = roficmd } },
-    { MODKEY,                                 XK_e,      spawn,          {.v = togglefilemanager } },
+    { MODKEY,                                 XK_e,      togglescratch,  {.ui = 0 } },
     { MODKEY|ShiftMask,                       XK_Return, spawn,          {.v = termcmd } },
     { MODKEY,                                 XK_v,      spawn,          {.v = copyqcmd } },
     { MODKEY|ShiftMask,                       XK_Print,  spawn,          {.v = ocr } },
@@ -124,7 +137,6 @@ static Key keys[] = {
     { MODKEY|ShiftMask,                       XK_Print,  spawn,          {.v = screenshotcmd3 } },
 
     // dwm shortcuts (stack, moving around)
-    { MODKEY,                                 XK_b,      togglebar,      {0} },
     { MODKEY,                                 XK_j,      focusstack,     {.i = +1 } },
     { MODKEY,                                 XK_k,      focusstack,     {.i = -1 } },
     { MODKEY,                                 XK_i,      incnmaster,     {.i = +1 } },
@@ -133,12 +145,12 @@ static Key keys[] = {
     { MODKEY,                                 XK_l,      setmfact,       {.f = +0.05} },
     { MODKEY,                                 XK_Return, zoom,           {0} },
     { MODKEY,                                 XK_Tab,    view,           {0} },
+    { MODKEY,                                 XK_Escape, view,           {0} },
     { MODKEY|ShiftMask,                       XK_q,      killclient,     {0} },
     { MODKEY,                                 XK_t,      setlayout,      {.v = &layouts[0]} },
-    { MODKEY,                                 XK_f,      setlayout,      {.v = &layouts[1]} },
     { MODKEY,                                 XK_m,      setlayout,      {.v = &layouts[2]} },
-    { MODKEY|ShiftMask,                       XK_f,      fullscreen,     {0} },
     { MODKEY,                                 XK_space,  setlayout,      {0} },
+    { MODKEY,                                 XK_f,      togglebar,      {0} },
     { MODKEY|ShiftMask,                       XK_space,  togglefloating, {0} },
     { MODKEY,                                 XK_0,      view,           {.ui = ~0 } },
     { MODKEY|ShiftMask,                       XK_0,      tag,            {.ui = ~0 } },
