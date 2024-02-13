@@ -45,7 +45,7 @@ function cpu_temp {
 }
 
 function cpu_usage {
- awk '{print $1}' < /proc/loadavg
+ top -bn2 | grep '%Cpu' | tail -1 | grep -P '(....|...) id,'|awk '{print 100-$8 "%"}'
 }
 
 function update_dwmbar {
@@ -60,7 +60,7 @@ function update_dwmbar {
 
 while true; do
 	if ! find /tmp/dwmbar-queue*; then
-		update_dwmbar
+		update_dwmbar &
 	fi
   sleep 5
 done
