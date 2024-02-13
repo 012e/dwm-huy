@@ -1,5 +1,4 @@
 /* See LICENSE file for copyright and license details. */
-
 /* appearance */
 static const unsigned int borderpx  = 1;        /* border pixel of windows */
 static const unsigned int snap      = 32;       /* snap pixel */
@@ -57,15 +56,16 @@ static const Rule rules[] = {
      *  WM_NAME(STRING) = title
      */
     /* class            instance    title       tags mask     isfloating   monitor    float x,y,w,h         floatborderpx*/
-    { "Gimp",          NULL,       NULL,       0,            1,           -1,        50,50,500,500,        5 },
-    { "Pavucontrol",   NULL,       NULL,       0,            1,           -1,        50,50,500,300,        3 },
-    { "copyq",         NULL,       NULL,       0,            1,           -1,        floatx(0.5),floaty(0.5),floatw(0.5),floath(0.5),     3 },
-    { "Thunar",        NULL,       NULL,       0,            1,           -1,        192,108,1536,864,     3 },
-    { "dolphin",       NULL,       NULL,       0,            1,           -1,        192,108,1536,864,     3 },
-    { NULL,            file_manager,  NULL,        SPTAG(0),     1,           -1,        192,108,1536,864,     3 },
-    { "firefox",       NULL,       NULL,       1 << 0,       0,           -1,        50,50,500,300,        3 },
-    { "Google-chrome", NULL,       NULL,       1 << 0,       0,           -1,        50,50,500,300,        3 },
-    { "thunderbird",   NULL,       NULL,       1 << 9,       0,           -1,        50,50,500,300,        3 },
+    { "Gimp",              NULL,       NULL,       0,            1,           -1,        50,50,500,500,        5 },
+    { "Pavucontrol",       NULL,       NULL,       0,            1,           -1,        50,50,500,300,        3 },
+    { "copyq",             NULL,       NULL,       0,            1,           -1,        floatx(0.5),floaty(0.5),floatw(0.5),floath(0.5),     3 },
+    { "Thunar",            NULL,       NULL,       0,            1,           -1,        192,108,1536,864,     3 },
+    { "dolphin",           NULL,       NULL,       0,            1,           -1,        192,108,1536,864,     3 },
+    { NULL,                file_manager,  NULL,        SPTAG(0),     1,           -1,        192,108,1536,864,     3 },
+    { "firefox",           NULL,       NULL,       1 << 0,       0,           -1,        50,50,500,300,        3 },
+    { "jetbrains-idea-ce", NULL,       NULL,       1 << 0,       0,           -1,        50,50,500,300,        3 },
+    { "Google-chrome",     NULL,       NULL,       1 << 0,       0,           -1,        50,50,500,300,        3 },
+    { "thunderbird",       NULL,       NULL,       1 << 9,       0,           -1,        50,50,500,300,        3 },
 };
 
 
