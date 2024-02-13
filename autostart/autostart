@@ -3,24 +3,25 @@ DWM=$(
   cd $(dirname "$0")
   pwd
 )
-echo $DWM
 
-/usr/lib/x86_64-linux-gnu/xfce4/notifyd/xfce4-notifyd &
-$DWM/dwmbar &
+# core components
 remapkey &
+brightness set 0.8 &
+$DWM/dwmbar &
+/usr/lib/x86_64-linux-gnu/xfce4/notifyd/xfce4-notifyd &
 
+# locker
 xss-lock slock &
-xset dpms 0 0 180 &                             # turn off screen after 3m
-xautolock -time 5 -locker "systemctl suspend" & # suspend after 5m
-
+xset dpms 0 0 300 &                             # turn off screen after 3m
+xautolock -time 20 -locker "systemctl suspend" & # suspend after 5m
 
 # keyboard rate: 150 delay + 40hz
 xset r rate 150 40 &
 
-# dwm bar
-feh --bg-scale $DWM/bg.jpg
+feh --bg-scale $DWM/smile.jpg & # background
 
-xrdb ~/.config/Xresources.d/main.Xresources
+xrdb ~/.config/Xresources.d/main.Xresources & # theming
+
 firefox &
 
 # unimportant tasks
@@ -30,4 +31,7 @@ sleep 3s
 newgrp input
 fusuma &
 
+thunderbird &
 copyq &
+dunst &
+xcompmgr &
