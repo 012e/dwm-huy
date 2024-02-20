@@ -3,20 +3,29 @@ function mydate {
 	echo "$(date "+%a %d/%m %T")"
 }
 
-function battery {
-	battery0=$(cat /sys/class/power_supply/BAT0/capacity)
-	battery1=$(cat /sys/class/power_supply/BAT1/capacity)
-	if [[ "$(cat /sys/class/power_supply/AC/online)" == "1" ]]; then
-		echo -n C
-	fi
-	echo $(((battery0 + battery1) / 2))
-}
+## could still be useful for other laptops with multiple cells
+# function battery {
+# 	battery0=$(cat /sys/class/power_supply/BAT0/capacity)
+# 	battery1=$(cat /sys/class/power_supply/BAT1/capacity)
+# 	if [[ "$(cat /sys/class/power_supply/AC/online)" == "1" ]]; then
+# 		echo -n C
+# 	fi
+# 	current_battery=$(((battery0 + battery1) / 2))
+#   if [[ current_battery -lt 10 ]]; then
+#     notify-send -u critical "Low battery" "Battery is at $current_battery%. Please plug in the charger."
+#   fi
+#   echo "$current_battery"
+# }
 
+## TODO: convert to accept arguments: battery paths
 function battery_lenovo {
 	battery0=$(cat /sys/class/power_supply/BAT0/capacity)
 	if [[ "$(cat /sys/class/power_supply/ADP0/online)" == "1" ]]; then
 		echo -n C
 	fi
+  if [[ battery0 -lt 10 ]]; then
+    notify-send -u critical "Low battery" "Battery is at $battery0%. Please plug in the charger."
+  fi
 	echo $battery0
 }
 
