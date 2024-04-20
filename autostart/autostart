@@ -18,7 +18,8 @@ xautolock -time 20 -locker "systemctl suspend" & # suspend after 5m
 # keyboard rate: 150 delay + 40hz
 xset r rate 150 40 &
 
-feh --bg-scale $DWM/smile.jpg & # background
+RANDOM_WALLPAPER=$(find "$DWM/wallpaper-dark" | shuf -n 1)
+feh --bg-scale "$RANDOM_WALLPAPER" &
 
 xrdb ~/.config/Xresources.d/main.Xresources & # theming
 
