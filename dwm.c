@@ -2126,43 +2126,7 @@ void tile(Monitor *m) {
 }
 
 void togglebar(const Arg *arg) {
-  unsigned int i;
   selmon->showbar = !selmon->showbar;
-  for (i = 0; i < LENGTH(tags); ++i)
-    if (selmon->tagset[selmon->seltags] & 1 << i)
-      selmon->pertag->showbars[i + 1] = selmon->showbar;
-
-  if (selmon->pertag->curtag == 0) {
-    selmon->pertag->showbars[0] = selmon->showbar;
-  }
-  updatebarpos(selmon);
-  resizebarwin(selmon);
-  if (showsystray) {
-    XWindowChanges wc;
-    if (!selmon->showbar)
-      wc.y = -bh;
-    else if (selmon->showbar) {
-      wc.y = 0;
-      if (!selmon->topbar)
-        wc.y = selmon->mh - bh;
-    }
-    XConfigureWindow(dpy, systray->win, CWY, &wc);
-  }
-  arrange(selmon);
-}
-
-void disablebar(const Arg *arg) {
-  if (selmon->showbar == 0)
-    return;
-  unsigned int i;
-  selmon->showbar = !selmon->showbar;
-  for (i = 0; i < LENGTH(tags); ++i)
-    if (selmon->tagset[selmon->seltags] & 1 << i)
-      selmon->pertag->showbars[i + 1] = selmon->showbar;
-
-  if (selmon->pertag->curtag == 0) {
-    selmon->pertag->showbars[0] = selmon->showbar;
-  }
   updatebarpos(selmon);
   resizebarwin(selmon);
   if (showsystray) {
@@ -2233,9 +2197,6 @@ void toggleview(const Arg *arg) {
         selmon->pertag->ltidxs[selmon->pertag->curtag][selmon->sellt];
     selmon->lt[selmon->sellt ^ 1] =
         selmon->pertag->ltidxs[selmon->pertag->curtag][selmon->sellt ^ 1];
-
-    if (selmon->showbar != selmon->pertag->showbars[selmon->pertag->curtag])
-      togglebar(NULL);
 
     focus(NULL);
     arrange(selmon);
@@ -2663,9 +2624,6 @@ void view(const Arg *arg) {
       selmon->pertag->ltidxs[selmon->pertag->curtag][selmon->sellt];
   selmon->lt[selmon->sellt ^ 1] =
       selmon->pertag->ltidxs[selmon->pertag->curtag][selmon->sellt ^ 1];
-
-  if (selmon->showbar != selmon->pertag->showbars[selmon->pertag->curtag])
-    togglebar(NULL);
 
   focus(NULL);
   arrange(selmon);
