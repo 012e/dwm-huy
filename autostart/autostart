@@ -6,13 +6,13 @@ DWM=$(
 
 # core components
 remapkey &
-brightness set 0.8 &
+#brightness set 0.8 &
 $DWM/dwmbar &
 /usr/lib/x86_64-linux-gnu/xfce4/notifyd/xfce4-notifyd &
 
 # locker
-xss-lock slock &
-xset dpms 0 0 300 &                             # turn off screen after 3m
+xss-lock i3lock &
+xset dpms 0 0 300 &                              # turn off screen after 3m
 xautolock -time 20 -locker "systemctl suspend" & # suspend after 5m
 
 # keyboard rate: 150 delay + 40hz
@@ -28,11 +28,7 @@ firefox &
 # unimportant tasks
 sleep 3s
 
-# touchpad gestures
-newgrp input
-fusuma &
-
-thunderbird &
 copyq &
 dunst &
-xcompmgr &
+picom &
+fcitx5 -d&
