@@ -49,6 +49,7 @@ static const XPoint stickyiconbb = {
 
 /* tagging */
 static const char *tags[] = {"0", "1", "2", "3", "4", "5", "6", "7", "8", "9"};
+static const int taglayouts[] = {2, 0, 0, 0, 0, 0, 0, 0, 0};
 
 #define SCREEN_WIDTH 1920
 #define SCREEN_HEIGHT 1080
