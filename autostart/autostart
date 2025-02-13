@@ -30,5 +30,5 @@ sleep 3s
 
 copyq &
 dunst &
-picom &
+picom --backend=glx &
 fcitx5 -d&
