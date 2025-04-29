@@ -6,6 +6,7 @@ DWM=$(
 
 # core components
 remapkey &
+$(remapkey && ibus-daemon -rdx) &
 #brightness set 0.8 &
 $DWM/dwmbar &
 /usr/lib/x86_64-linux-gnu/xfce4/notifyd/xfce4-notifyd &
@@ -32,3 +33,21 @@ copyq &
 dunst &
 picom --backend=glx &
 fcitx5 -d&
+ghostty --initial-command="tmux new -A -s floaty" --x11-instance-name="floatyghostty" &
+dolphin &
+
+function notfy_sleep_time {
+  while true; do
+    if [ "$(date +%H)" -ge 23 ]; then
+      while true; do
+          notify-send "Good night" "It's time to sleep"
+          sound &
+          sleep 1
+      done;
+    fi
+    sleep 20
+  done;
+}
+
+notfy_sleep_time &
+

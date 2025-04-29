@@ -34,10 +34,12 @@ typedef struct {
   const char *name;
   const void *cmd;
 } Sp;
-const char *spcmd1[] = {file_manager, NULL};
+const char *spcmd1[] = {"dolphin", NULL};
+const char *spcmd2[] = {"ghostty", "--initial-command=tmux new -A -s floaty", "--x11-instance-name=floatyghostty", NULL};
 static Sp scratchpads[] = {
     /* name          cmd  */
-    {file_manager, spcmd1},
+    {"dolphin", spcmd1},
+    {"ghostty", spcmd2},
 };
 
 static const XPoint stickyicon[] = {
@@ -74,6 +76,7 @@ static const Rule rules[] = {
     // { "dolphin",           NULL,       NULL,       0,            1, -1,
     // 192,108,1536,864,     3 },
     {NULL, file_manager, NULL, SPTAG(0), 1, -1, 192, 108, 1536, 864, 3},
+    {NULL, "floatyghostty", NULL, SPTAG(1), 1, -1, 192, 108, 1536, 864, 3},
     {"firefox", NULL, NULL, 1 << 0, 0, -1, 50, 50, 500, 300, 3},
     {"jetbrains-idea-ce", NULL, NULL, 1 << 0, 0, -1, 50, 50, 500, 300, 3},
     {"jetbrains-toolbox", NULL, NULL, 2 << 0, 0, -1, 50, 50, 500, 300, 3},
@@ -113,7 +116,7 @@ static const char *dmenucmd[] = {
     "-nf",       col_gray3, "-sb",    col_cyan, "-sf",     col_gray4, NULL};
 static const char *roficmd[] = {"rofi",  "-matching", "fuzzy",
                                 "-show", "run",       NULL};
-static const char *termcmd[] = {"sttmux", NULL};
+static const char *termcmd[] = {"ghosttmux", NULL};
 
 // Volume controls
 static const char *volumeup[] = {"volume", "up", NULL};
@@ -126,7 +129,6 @@ static const char *brightnessup[] = {"brightness", "up", NULL};
 static const char *brightnessdown[] = {"brightness", "down", NULL};
 static const char *copyqcmd[] = {"copyq", "toggle", NULL};
 static const char *ocr[] = {"ocr-to-clipboard", NULL};
-static const char *toggle_input_method[] = {"fcitx5-remote", "-t", NULL};
 static const char *screenshot[] = {"flameshot", "gui", NULL};
 static const char *emoji[] = {"rofimoji", " --max-recent", "3", NULL};
 
@@ -140,10 +142,11 @@ static Key keys[] = {
 
     {MODKEY, XK_p, spawn, {.v = roficmd}},
     {MODKEY, XK_e, togglescratch, {.ui = 0}},
+    {MODKEY, XK_backslash, togglescratch, {.ui = 1}},
+    {MODKEY, XK_r, togglescratch, {.ui = 1}},
     {MODKEY | ShiftMask, XK_Return, spawn, {.v = termcmd}},
     {MODKEY, XK_v, spawn, {.v = copyqcmd}},
     {MODKEY | ShiftMask, XK_Print, spawn, {.v = ocr}},
-    {MODKEY, XK_semicolon, spawn, {.v = toggle_input_method}},
     {MODKEY, XK_period, spawn, {.v = emoji}},
     {0, XK_Print, spawn, {.v = screenshot}},
 
@@ -151,8 +154,8 @@ static Key keys[] = {
     {MODKEY, XK_k, focusstack, {.i = -1}},
     {MODKEY, XK_a, focusstack, {.i = +1}},
     {MODKEY, XK_d, focusstack, {.i = -1}},
-    {MODKEY, XK_i, incnmaster, {.i = +1}},
-    {MODKEY, XK_d, incnmaster, {.i = -1}},
+    /*{MODKEY, XK_i, incnmaster, {.i = +1}},*/
+    {MODKEY | ShiftMask, XK_i, incnmaster, {.i = -1}},
     {MODKEY, XK_h, setmfact, {.f = -0.05}},
     {MODKEY, XK_l, setmfact, {.f = +0.05}},
     {MODKEY, XK_Return, zoom, {0}},
