@@ -22,10 +22,9 @@ function battery_lenovo {
 	battery0=$(cat /sys/class/power_supply/BAT0/capacity)
 	if [[ "$(cat /sys/class/power_supply/ADP0/online)" == "1" ]]; then
 		echo -n C
-	fi
-  if [[ battery0 -lt 10 ]]; then
-    notify-send -u critical "Low battery" "Battery is at $battery0%. Please plug in the charger."
-  fi
+        elif [[ battery0 -lt 10 ]]; then
+		notify-send -u critical "Low battery" "Battery is at $battery0%. Please plug in the charger."
+        fi
 	echo $battery0
 }
 

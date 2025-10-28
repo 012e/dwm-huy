@@ -9,12 +9,12 @@ remapkey &
 $(remapkey && ibus-daemon -rdx) &
 #brightness set 0.8 &
 $DWM/dwmbar &
-/usr/lib/x86_64-linux-gnu/xfce4/notifyd/xfce4-notifyd &
+# /usr/lib/x86_64-linux-gnu/xfce4/notifyd/xfce4-notifyd &
 
 # locker
-xss-lock i3lock &
+# xss-lock i3lock &
 xset dpms 0 0 300 &                              # turn off screen after 3m
-xautolock -time 20 -locker "systemctl suspend" & # suspend after 5m
+# xautolock -time 20 -locker "systemctl suspend" & # suspend after 5m
 
 # keyboard rate: 150 delay + 40hz
 xset r rate 150 40 &
@@ -32,7 +32,6 @@ sleep 3s
 copyq &
 dunst &
 picom --backend=glx &
-fcitx5 -d&
 ghostty --initial-command="tmux new -A -s floaty" --x11-instance-name="floatyghostty" &
 dolphin &
 
