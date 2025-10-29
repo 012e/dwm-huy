@@ -7,6 +7,7 @@
 
 import logging
 import pathlib
+import subprocess
 import sys
 
 import pyudev
@@ -32,6 +33,10 @@ def play_connected_sound():
 
 def play_disconnected_sound():
     playsound(DISCONNECTED_SOUND_FILE_PATH, backend="ffplay")
+
+
+def remap_keyboard():
+    subprocess.run(["remapkey"])
 
 
 def monitor_devices():
@@ -70,6 +75,7 @@ def monitor_devices():
                 if action == "add":
                     logger.info(f"✅ USB DEVICE CONNECTED: {device_info}")
                     play_connected_sound()
+                    remap_keyboard()
 
                 elif action == "remove":
                     logger.info(f"❌ USB DEVICE DISCONNECTED: {device_info}")
@@ -92,6 +98,8 @@ def monitor_devices():
             if action == "add":
                 logger.info(f"➕ BLUETOOTH DEVICE DETECTED/READY: {device_name}")
                 play_connected_sound()
+                remap_keyboard()
+
             elif action == "remove":
                 logger.info(f"➖ BLUETOOTH DEVICE REMOVED/LOST: {device_name}")
                 play_disconnected_sound()

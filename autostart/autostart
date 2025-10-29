@@ -34,7 +34,7 @@ dunst &
 picom --backend=glx &
 ghostty --initial-command="tmux new -A -s floaty" --x11-instance-name="floatyghostty" &
 dolphin &
-uv run ./play-sound-on-connect.py & 
+uv run "$DWM/play-sound-on-connect.py" & 
 
 function notfy_sleep_time {
   while true; do
