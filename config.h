@@ -29,16 +29,16 @@ static const char *colors[][3] = {
     [SchemeSel] = {col_gray4, col_cyan, col_border},
 };
 
-static const char file_manager[] = "dolphin";
+static const char file_manager[] = "thunar";
 typedef struct {
   const char *name;
   const void *cmd;
 } Sp;
-const char *spcmd1[] = {"dolphin", NULL};
+const char *spcmd1[] = {file_manager, NULL};
 const char *spcmd2[] = {"ghostty", "--initial-command=tmux new -A -s floaty", "--x11-instance-name=floatyghostty", NULL};
 static Sp scratchpads[] = {
     /* name          cmd  */
-    {"dolphin", spcmd1},
+    {file_manager, spcmd1},
     {"ghostty", spcmd2},
 };
 
@@ -114,8 +114,10 @@ static char dmenumon[2] =
 static const char *dmenucmd[] = {
     "dmenu_run", "-m",      dmenumon, "-fn",    dmenufont, "-nb",     col_gray1,
     "-nf",       col_gray3, "-sb",    col_cyan, "-sf",     col_gray4, NULL};
-static const char *roficmd[] = {"rofi",  "-matching", "fuzzy",
+static const char *rofirun[] = {"rofi",  "-matching", "fuzzy",
                                 "-show", "run",       NULL};
+static const char *rofidrun[] = {"rofi",  "-matching", "fuzzy",
+                                "-show", "drun",       NULL};
 static const char *termcmd[] = {"ghosttmux", NULL};
 
 // Volume controls
@@ -140,7 +142,8 @@ static Key keys[] = {
     {0, XF86XK_MonBrightnessDown, spawn, {.v = brightnessdown}},
     {0, XF86XK_MonBrightnessUp, spawn, {.v = brightnessup}},
 
-    {MODKEY, XK_p, spawn, {.v = roficmd}},
+    {MODKEY, XK_p, spawn, {.v = rofirun}},
+    {MODKEY | ShiftMask, XK_p, spawn, {.v = rofidrun}},
     {MODKEY, XK_e, togglescratch, {.ui = 0}},
     {MODKEY, XK_backslash, togglescratch, {.ui = 1}},
     {MODKEY, XK_r, togglescratch, {.ui = 1}},
