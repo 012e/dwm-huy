@@ -2606,9 +2606,13 @@ void view(const Arg *arg) {
   int i;
   unsigned int tmptag;
   int x, y;
+  Client *oldsel;
 
   if ((arg->ui & TAGMASK) == selmon->tagset[selmon->seltags])
     return;
+  
+  /* Save the currently selected client on the old workspace */
+  oldsel = selmon->sel;
   
   /* Save current cursor position for the current tag */
   if (getrootptr(&x, &y)) {
@@ -2642,6 +2646,12 @@ void view(const Arg *arg) {
   selmon->lt[selmon->sellt ^ 1] =
       selmon->pertag->ltidxs[selmon->pertag->curtag][selmon->sellt ^ 1];
 
+  /* Focus a client on the new workspace, but preserve the old selection's focus state */
+  if (oldsel && !ISVISIBLE(oldsel)) {
+    /* The old selected client is not visible on the new tag, so temporarily
+     * clear selmon->sel to prevent unfocus() from being called on it */
+    selmon->sel = NULL;
+  }
   focus(NULL);
   arrange(selmon);
   
