@@ -365,8 +365,6 @@ struct Pertag {
   const Layout
       *ltidxs[LENGTH(tags) + 1][2]; /* matrix of tags and layouts indexes  */
   int showbars[LENGTH(tags) + 1];   /* display bar for the current tag */
-  int cursorx[LENGTH(tags) + 1];    /* cursor x position per tag */
-  int cursory[LENGTH(tags) + 1];    /* cursor y position per tag */
 };
 
 /* compile-time check if all tags fit into an unsigned int bit array. */
@@ -826,8 +824,6 @@ Monitor *createmon(void) {
     m->pertag->sellts[i] = m->sellt;
 
     m->pertag->showbars[i] = m->showbar;
-    m->pertag->cursorx[i] = 0;
-    m->pertag->cursory[i] = 0;
   }
 
   m->lt[0] = m->pertag->ltidxs[1][0];
@@ -2605,17 +2601,9 @@ void updatewmhints(Client *c) {
 void view(const Arg *arg) {
   int i;
   unsigned int tmptag;
-  int x, y;
 
   if ((arg->ui & TAGMASK) == selmon->tagset[selmon->seltags])
     return;
-  
-  /* Save current cursor position for the current tag */
-  if (getrootptr(&x, &y)) {
-    selmon->pertag->cursorx[selmon->pertag->curtag] = x;
-    selmon->pertag->cursory[selmon->pertag->curtag] = y;
-  }
-  
   selmon->seltags ^= 1; /* toggle sel tagset */
   if (arg->ui & TAGMASK) {
     selmon->tagset[selmon->seltags] = arg->ui & TAGMASK;
@@ -2644,12 +2632,6 @@ void view(const Arg *arg) {
 
   focus(NULL);
   arrange(selmon);
-  
-  /* Restore cursor position for the new tag */
-  x = selmon->pertag->cursorx[selmon->pertag->curtag];
-  y = selmon->pertag->cursory[selmon->pertag->curtag];
-  if (x != 0 || y != 0)
-    XWarpPointer(dpy, None, root, 0, 0, 0, 0, x, y);
 }
 
 Client *wintoclient(Window w) {
