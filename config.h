@@ -30,16 +30,19 @@ static const char *colors[][3] = {
 };
 
 static const char file_manager[] = "thunar";
+static const char ksnip[] = "ksnip";
 typedef struct {
   const char *name;
   const void *cmd;
 } Sp;
 const char *spcmd1[] = {file_manager, NULL};
 const char *spcmd2[] = {"ghostty", "--initial-command=tmux new -A -s floaty", "--x11-instance-name=floatyghostty", NULL};
+const char *spcmd3[] = {"ksnip", NULL};
 static Sp scratchpads[] = {
     /* name          cmd  */
     {file_manager, spcmd1},
     {"ghostty", spcmd2},
+    {"ksnip", spcmd3},
 };
 
 static const XPoint stickyicon[] = {
@@ -72,6 +75,8 @@ static const Rule rules[] = {
     {"Pavucontrol", NULL, NULL, 0, 1, -1, 50, 50, 500, 300, 3},
     {"copyq", NULL, NULL, 0, 1, -1, floatx(0.5), floaty(0.5), floatw(0.5),
      floath(0.5), 3},
+     {"ksnip", NULL, NULL, 0, 1, -1, floatx(0.5), floaty(0.5), floatw(0.5),
+      floath(0.5), 3},
     {"Thunar", NULL, NULL, 0, 1, -1, 192, 108, 1536, 864, 3},
     // { "dolphin",           NULL,       NULL,       0,            1, -1,
     // 192,108,1536,864,     3 },
@@ -147,6 +152,7 @@ static Key keys[] = {
     {MODKEY, XK_e, togglescratch, {.ui = 0}},
     {MODKEY, XK_backslash, togglescratch, {.ui = 1}},
     {MODKEY, XK_r, togglescratch, {.ui = 1}},
+    {MODKEY | ShiftMask, XK_s, togglescratch, {.ui = 2}}, // screenshot
     {MODKEY | ShiftMask, XK_Return, spawn, {.v = termcmd}},
     {MODKEY, XK_v, spawn, {.v = copyqcmd}},
     {MODKEY | ShiftMask, XK_Print, spawn, {.v = ocr}},
