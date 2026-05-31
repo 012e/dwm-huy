@@ -36,7 +36,8 @@ typedef struct {
   const void *cmd;
 } Sp;
 const char *spcmd1[] = {file_manager, NULL};
-const char *spcmd2[] = {"ghostty", "--initial-command=tmux new -A -s floaty", "--x11-instance-name=floatyghostty", NULL};
+const char *spcmd2[] = {"ghostty", "--initial-command=tmux new -A -s floaty",
+                        "--x11-instance-name=floatyghostty", NULL};
 const char *spcmd3[] = {"ksnip", NULL};
 static Sp scratchpads[] = {
     /* name          cmd  */
@@ -75,8 +76,8 @@ static const Rule rules[] = {
     {"Pavucontrol", NULL, NULL, 0, 1, -1, 50, 50, 500, 300, 3},
     {"copyq", NULL, NULL, 0, 1, -1, floatx(0.5), floaty(0.5), floatw(0.5),
      floath(0.5), 3},
-     {"ksnip", NULL, NULL, 0, 1, -1, floatx(0.5), floaty(0.5), floatw(0.5),
-      floath(0.5), 3},
+    {"ksnip", NULL, NULL, 0, 1, -1, floatx(0.5), floaty(0.5), floatw(0.5),
+     floath(0.5), 3},
     {"Thunar", NULL, NULL, 0, 1, -1, 192, 108, 1536, 864, 3},
     // { "dolphin",           NULL,       NULL,       0,            1, -1,
     // 192,108,1536,864,     3 },
@@ -97,7 +98,8 @@ static const int resizehints =
     1; /* 1 means respect size hints in tiled resizals */
 static const int lockfullscreen =
     1; /* 1 will force focus on the fullscreen window */
-static const int refreshrate = 120; /* refresh rate (per second) for client move/resize */
+static const int refreshrate =
+    120; /* refresh rate (per second) for client move/resize */
 
 static const Layout layouts[] = {
     /* symbol     arrange function */
@@ -123,7 +125,7 @@ static const char *dmenucmd[] = {
 static const char *rofirun[] = {"rofi",  "-matching", "fuzzy",
                                 "-show", "run",       NULL};
 static const char *rofidrun[] = {"rofi",  "-matching", "fuzzy",
-                                "-show", "drun",       NULL};
+                                 "-show", "drun",      NULL};
 static const char *termcmd[] = {"ghosttmux", NULL};
 
 // Volume controls
@@ -174,7 +176,7 @@ static Key keys[] = {
     {MODKEY | ShiftMask, XK_q, killclient, {0}},
     {MODKEY, XK_t, setlayout, {.v = &layouts[0]}},
     {MODKEY, XK_m, setlayout, {.v = &layouts[2]}},
-    {MODKEY, XK_s, spawn, { .v = screenshot }},
+    {MODKEY, XK_s, spawn, {.v = screenshot}},
     {MODKEY, XK_f, togglebar, {0}},
     {MODKEY | ShiftMask, XK_space, togglefloating, {0}},
     {MODKEY, XK_0, view, {.ui = ~0}},
