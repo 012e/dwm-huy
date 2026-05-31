@@ -506,7 +506,7 @@ void arrange(Monitor *m) {
 }
 
 void arrangemon(Monitor *m) {
-  strncpy(m->ltsymbol, m->lt[m->sellt]->symbol, sizeof m->ltsymbol);
+  snprintf(m->ltsymbol, sizeof m->ltsymbol, "%s", m->lt[m->sellt]->symbol);
   if (m->lt[m->sellt]->arrange)
     m->lt[m->sellt]->arrange(m);
 }
@@ -826,7 +826,8 @@ Monitor *createmon(void) {
 
   m->lt[0] = m->pertag->ltidxs[1][0];
   m->lt[1] = &layouts[1 % LENGTH(layouts)];
-  strncpy(m->ltsymbol, m->pertag->ltidxs[1][0]->symbol, sizeof m->ltsymbol);
+  snprintf(m->ltsymbol, sizeof m->ltsymbol, "%s",
+           m->pertag->ltidxs[1][0]->symbol);
 
   return m;
 }
@@ -1708,8 +1709,8 @@ void runautostart(void) {
     free(pathpfx);
   }
 
-  if (access(path, X_OK) == 0)
-    system(path);
+  if (access(path, X_OK) == 0 && system(path) == -1)
+    perror(path);
 
   /* now the non-blocking script */
   if (sprintf(path, "%s/%s", pathpfx, autostartsh) <= 0) {
@@ -1717,8 +1718,8 @@ void runautostart(void) {
     free(pathpfx);
   }
 
-  if (access(path, X_OK) == 0)
-    system(strcat(path, " &"));
+  if (access(path, X_OK) == 0 && system(strcat(path, " &")) == -1)
+    perror(path);
 
   free(pathpfx);
   free(path);
@@ -1898,8 +1899,8 @@ void setlayout(const Arg *arg) {
     selmon->sellt ^= 1;
   if (arg && arg->v)
     selmon->lt[selmon->sellt] = (Layout *)arg->v;
-  strncpy(selmon->ltsymbol, selmon->lt[selmon->sellt]->symbol,
-          sizeof selmon->ltsymbol);
+  snprintf(selmon->ltsymbol, sizeof selmon->ltsymbol, "%s",
+           selmon->lt[selmon->sellt]->symbol);
 
   for (i = 0; i < LENGTH(tags); ++i)
     if (selmon->tagset[selmon->seltags] & 1 << i) {

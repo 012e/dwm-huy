@@ -60,8 +60,8 @@ static const int taglayouts[] = {2, 0, 0, 0, 0, 0, 0, 0, 0};
 #define SCREEN_HEIGHT 1080
 
 // p is the percentage that the window takes on the screen
-#define floatx(p) round((SCREEN_WIDTH - SCREEN_WIDTH * p) / 2)
-#define floaty(p) round((SCREEN_HEIGHT - SCREEN_HEIGHT * p) / 2)
+#define floatx(p) ((int)(((SCREEN_WIDTH - SCREEN_WIDTH * (p)) / 2) + 0.5))
+#define floaty(p) ((int)(((SCREEN_HEIGHT - SCREEN_HEIGHT * (p)) / 2) + 0.5))
 #define floatw(p) SCREEN_WIDTH - floatx(p) * 2
 #define floath(p) SCREEN_HEIGHT - floaty(p) * 2
 static const Rule rules[] = {

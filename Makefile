@@ -43,10 +43,7 @@ install: all
 
 uninstall:
 	rm -f ${DESTDIR}${PREFIX}/bin/dwm\
-	rm -f /home/huy/.local/share/dwm
-
-uninstall:
-	rm -f ${DESTDIR}${PREFIX}/bin/dwm\
 		${DESTDIR}${MANPREFIX}/man1/dwm.1
+	rm -f /home/huy/.local/share/dwm
 
 .PHONY: all clean dist install uninstall
